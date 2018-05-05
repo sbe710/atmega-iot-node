@@ -1,4 +1,3 @@
-var db = require('../libs/mongoose');
 var mongoose = require('mongoose');
 
 var Data = require('../models/entities')(mongoose);
@@ -13,7 +12,7 @@ function call() {
     var requestTime = (req, res, next) => {
         req.requestTime = +new Date();
         next();
-    }
+    };
 
     var saveToDb = (req, res) =>  {
         var data = new Data({
@@ -25,22 +24,22 @@ function call() {
         });
         console.log("from esp " + data);
         data.save((err, data, affected) => { });
-    }
+    };
 
     var hour = (req, res, next) => {
         req.period = oneHour;
         next();
-    }
+    };
 
     var day = (req, res, next) => {
         req.period = oneDay;
         next();
-    }
+    };
 
     var week = (req, res, next) => {
         req.period = oneWeek;
         next();
-    }
+    };
 
     var getDocument = (req, res) => {
         console.log(req.period);
@@ -49,7 +48,7 @@ function call() {
             res.json(list);
             console.log(list);
         }).sort({$natural: -1});
-    }
+    };
 
     var lastDoc = (req, res, next) => {
         Data.findOne().sort({$natural: -1}).limit(1).exec((err, doc) => {
@@ -60,9 +59,9 @@ function call() {
             console.log(req.lastDoc)
             next();
         });
-    }
+    };
 
-    var update = (req, res) => {
+    var updateRelayState = (req, res) => {
         Data.findOneAndUpdate(
             { dt: req.lastDoc },
             { $set: { relay: req.body.state } },
@@ -71,7 +70,7 @@ function call() {
                 if(err) console.log("err");
             });
         console.log(req.body.state);
-    }
+    };
 
     var lastRelayState = (req, res, next) => {
         Data.findOne({dt: req.lastDoc}).exec((err, doc) => {
@@ -80,12 +79,12 @@ function call() {
             req.lastRelayState = doc.relay;
             next();
         });
-    }
+    };
 
     var checkRelay = (req, res) =>  {
         console.log(req.lastRelayState);
         res.json(req.lastRelayState);
-    }
+    };
 
     return {
         requestTime: requestTime,
@@ -95,7 +94,7 @@ function call() {
         week: week,
         getDocument: getDocument,
         lastDoc: lastDoc,
-        update: update,
+        updateRelayState: updateRelayState,
         lastRelayState: lastRelayState,
         checkRelay: checkRelay,
     }

@@ -1,9 +1,7 @@
 var express = require('express'); 
 var bodyParser = require('body-parser');
-var path = require('path');
 var routes = require('./routes');
 var config = require('./libs/config');
-var db = require('./libs/mongoose');
 
 var app = express();
 
@@ -24,7 +22,7 @@ app.use((err, req, res, next) => {
 
 var handlers = {
     entities: require('./handlers/entities'),
-}
+};
 
 function run() {
     routes.setup(app, handlers);
