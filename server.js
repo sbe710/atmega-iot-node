@@ -1,14 +1,13 @@
 var express = require('express'); 
 var bodyParser = require('body-parser');
 var path = require('path');
-
 var routes = require('./routes');
 var config = require('./libs/config');
 var db = require('./libs/mongoose');
 
 var app = express();
 
-app.use(bodyParser.json()); 
+app.use(bodyParser.json());
 
 //ошибка валидации 
 app.use((err, req, res, next) => {
