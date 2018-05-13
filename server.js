@@ -2,8 +2,10 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var routes = require('./routes');
 var config = require('./libs/config');
+var mongoose = require('./libs/mongoose');
 
 var app = express();
+var db = mongoose();
 
 app.use(bodyParser.json());
 
